@@ -1,0 +1,58 @@
+/*This website was developed by Alan Nunes, Kevin Lucas, Marlon Augusto and Rafael Santana*/
+*{
+	margin: 0;
+	text-shadow: none;
+}
+
+.container {
+  	width: 100%;
+  	height: 100%;
+}
+
+.container .box {
+	width: 100%;
+	height: 490px;
+	padding: 5px;
+	overflow: auto;
+	background: white;
+	border: 1px solid #e0e0e0;
+	border-radius: 5px;
+}
+
+.container .box .messageLeft {
+	background: #edfaff;
+	border-radius: 5px;
+	float:left;padding-right:10px;
+	margin-top: 20px;
+}
+
+.container .box .messageRight {
+	background: #edfaff;
+	border-radius: 5px;
+	float:right;padding-left:10px;
+	margin-top: 20px;
+}
+
+.container .inputs {
+	width: 100%;
+  	height: 100%;
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.container .inputs .ui-input-text {
+	width: 70%;
+	height: 50px;
+}
+
+.container .inputs .message {
+	width: 70%;
+	height: 50px;
+	padding: 5px;
+}
+
+.container .inputs .button {
+	width: 30%;
+	height: 50px;
+	padding: 5px;
+}
