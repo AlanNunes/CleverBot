@@ -126,6 +126,12 @@ class Messages {
 		return "Thanks for your help !";
 	}
 
+	// This function fetch an unknown message. I mean a message with no answer
+	// So we can find one and show to the user
+	public function fetchUnknowMessages(){
+		$query = "SELECT "
+	}
+
 	public function removeSpecialCharacters($txt){
 		$txt = str_replace(',', '', $txt);
 		$txt = str_replace('.', '', $txt);

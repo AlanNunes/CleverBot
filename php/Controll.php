@@ -50,7 +50,7 @@ function saveHelp(){
 	$txt = safe_data($_POST["message"]);
 	$msgId = safe_data($_POST["msgId"]);
 	$result = $message->saveHelp($txt, $msgId);
-	$response = array("answer" => $result);
+	// $response = array("answer" => $result);
 
 	echo json_encode($response);
 }
