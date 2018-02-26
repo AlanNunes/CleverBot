@@ -100,8 +100,13 @@ class Messages {
 
 		// We found exactly nothing, so let's save the user's message
 		// And ask him to answer his own question for us
-		$query = "INSERT INTO messages (msgText) VALUES ('$this->text')";
-		$this->conn->query($query);
+		// But before we need to check if this message already exists
+		$query = "SELECT msgId FROM messages WHERE msgText = '$this->text' LIMIT 1";
+		$result = $this->conn->query($query);
+		if( !($result->num_rows > 0) ){
+			$query = "INSERT INTO messages (msgText) VALUES ('$this->text')";
+			$this->conn->query($query);
+		}
 		// It's needed to get the id of the message that we just inserted
 		$query = "SELECT msgId FROM messages WHERE msgText = '$this->text'";
 		$result = $this->conn->query($query);
@@ -128,8 +133,22 @@ class Messages {
 
 	// This function fetch an unknown message. I mean a message with no answer
 	// So we can find one and show to the user
-	public function fetchUnknowMessages(){
-		$query = "SELECT "
+	public function fetchUnknownMessages(){
+		$query = "SELECT msgId, msgText FROM messages WHERE msgId >= RAND() * (SELECT MAX(msgId) FROM messages) AND msgAnswerId IS NULL LIMIT 1";
+		$result = $this->conn->query($query);
+		if( $result->num_rows > 0 ){
+			// Uhuul I'm so thrilled, we've found an unanswered message
+			// Let's text this message and wait for the user's answer and save it
+			// The best is that he's not going to notice it !
+			$row = $result->fetch_assoc();
+
+			return array("AskUser" => TRUE, "ERROR" => FALSE, "msgId" => $row["msgId"], "msgText" => $row["msgText"]);
+		}else{
+			//return $this->saySomething();
+			// Why this function ?
+			// It means that we have found no empty words
+			// Then we have to fetch some message from our DataBase and make the talk carry on
+		}
 	}
 
 	public function removeSpecialCharacters($txt){
@@ -139,6 +158,7 @@ class Messages {
 		$txt = str_replace('!', '', $txt);
 		$txt = str_replace(':', '', $txt);
 		$txt = str_replace(';', '', $txt);
+		$txt = str_replace("'", '', $txt);
 
 		return $txt;
 	}

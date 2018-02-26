@@ -9,13 +9,14 @@
     <script type="text/jscript" src="js/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
     <script type="text/jscript" src="bootstrap/js/bootstrap.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 <div data-role="page" id="mainpage">
 
 	<div data-role="header" class="header" style="background: #009FDD; text-shadow: none;">
-		<h1>Clever Bot</h1>
+		<h1>Clever Bot - Machine Learning</h1>
 	</div>
 
 	<div role="main" class="ui-content" class="content">
@@ -76,7 +77,7 @@
 	        	askHelp = data.askHelp;
 	        	msgId = data.msgId;
 
-	            $("#box").append(data.answer);
+	            $("#box").append("<br/><div class='messageLeft'><strong>[VOCÊ]</strong>"+ data.answer +"</div><br/><br/>");
 	            $("#message").val("");
 	        });
 		}

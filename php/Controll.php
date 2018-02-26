@@ -23,7 +23,7 @@ function sendMessage(){
 	$conn = $db->getConnection();
 
 	$message = new Messages($conn);
-	$txt = $_POST["message"];
+	$txt = safe_data($_POST["message"]);
 	// We need the original text to use it after
 	$message->setText($txt);
 
@@ -33,7 +33,7 @@ function sendMessage(){
 	$result = $message->findAnswer($words);
 
 	if( $result["AskUser"] == TRUE ){
-		$response = array("answer" => "How would you answer the message below ?<br>".$txt, "askHelp" => TRUE, "msgId" => $result["msgId"]);
+		$response = array("answer" => "How would you answer the message below ?<br/>".$txt, "askHelp" => TRUE, "msgId" => $result["msgId"]);
 		echo json_encode($response);
 	}else{
 		$response = array("answer" => $result["msgText"], "askHelp" => FALSE, "msgId" => $result["msgId"]);
@@ -49,8 +49,18 @@ function saveHelp(){
 
 	$txt = safe_data($_POST["message"]);
 	$msgId = safe_data($_POST["msgId"]);
-	$result = $message->saveHelp($txt, $msgId);
-	// $response = array("answer" => $result);
+	$resultHelp = $message->saveHelp($txt, $msgId);
+	// After saving the help of the user, fetch an answer that has no reply
+	// Why ?
+	// Because this way we're going to keep the conversation on. Besides that we can save the reply of the user
+	// It's worth because the reply of the user is going to be natural and we can save natural answers to reply natural messages. Gotcha ?
+	$unkownMsg = $message->fetchUnknownMessages();
+	$msgText = $unkownMsg["msgText"];
+	$msgId = $unkownMsg["msgId"];
+	// $answer = $resultHelp . "<br/>" . $msgText;
+	$answer = $msgText;
+
+	$response = array("answer" => $answer, "askHelp" => FALSE, "msgId" => $msgId);
 
 	echo json_encode($response);
 }
